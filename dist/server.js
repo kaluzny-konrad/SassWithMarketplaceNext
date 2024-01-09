@@ -43,38 +43,56 @@ var express_1 = __importDefault(require("express"));
 var build_1 = __importDefault(require("next/dist/build"));
 var path_1 = __importDefault(require("path"));
 var next_utils_1 = require("./next-utils");
+var get_payload_1 = require("./get-payload");
 var app = (0, express_1.default)();
 var PORT = Number(process.env.PORT) || 3000;
 var start = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var payload;
     return __generator(this, function (_a) {
-        if (process.env.NEXT_BUILD) {
-            app.listen(PORT, function () { return __awaiter(void 0, void 0, void 0, function () {
-                var dir;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            dir = path_1.default.join(__dirname, "../");
-                            console.log("> Build started to dir: ".concat(dir));
-                            return [4 /*yield*/, (0, build_1.default)(dir, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "default")];
-                        case 1:
-                            _a.sent();
-                            process.exit();
-                            return [2 /*return*/];
-                    }
-                });
-            }); });
-            return [2 /*return*/];
-        }
-        app.use(function (req, res) { return (0, next_utils_1.nextHandler)(req, res); });
-        next_utils_1.nextApp.prepare().then(function () {
-            app.listen(PORT, function () { return __awaiter(void 0, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    console.log("> App listen on ".concat(process.env.NEXT_PUBLIC_SERVER_URL, ":").concat(PORT));
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, get_payload_1.getPayloadClient)({
+                    initOptions: {
+                        express: app,
+                        onInit: function (cms) { return __awaiter(void 0, void 0, void 0, function () {
+                            return __generator(this, function (_a) {
+                                cms.logger.info("> Admin URL ".concat(cms.getAdminURL()));
+                                return [2 /*return*/];
+                            });
+                        }); },
+                    },
+                })];
+            case 1:
+                payload = _a.sent();
+                if (process.env.NEXT_BUILD) {
+                    app.listen(PORT, function () { return __awaiter(void 0, void 0, void 0, function () {
+                        var dir;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    dir = path_1.default.join(__dirname, "../");
+                                    payload.logger.info("> Build started to dir: ".concat(dir));
+                                    return [4 /*yield*/, (0, build_1.default)(dir, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "default")];
+                                case 1:
+                                    _a.sent();
+                                    process.exit();
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); });
                     return [2 /*return*/];
+                }
+                app.use(function (req, res) { return (0, next_utils_1.nextHandler)(req, res); });
+                next_utils_1.nextApp.prepare().then(function () {
+                    payload.logger.info("Next.js started");
+                    app.listen(PORT, function () { return __awaiter(void 0, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            payload.logger.info("> App listen on ".concat(process.env.NEXT_PUBLIC_SERVER_URL));
+                            return [2 /*return*/];
+                        });
+                    }); });
                 });
-            }); });
-        });
-        return [2 /*return*/];
+                return [2 /*return*/];
+        }
     });
 }); };
 start();

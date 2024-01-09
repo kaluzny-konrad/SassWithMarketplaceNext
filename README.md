@@ -12,16 +12,15 @@ Next.js app on Vercel with Payload, Mongo, Stripe, Resend and custom Auth
 
 ## Core Packages to install:
 - `express`
-- `@vercel/analytics`
-- `@vercel/speed-insights`
+- `payload`
 
-All install command: `npm install express @vercel/analytics @vercel/speed-insights`
+All base command: `npm install express @vercel/analytics @vercel/speed-insights dotenv`
+All payload command: `npm install payload @payloadcms/bundler-webpack @payloadcms/db-mongodb @payloadcms/richtext-slate`
 
 ## Dev Packages to install:
 - `@types/express`
 - `nodemon`
 - `copyfiles`
-- `dotenv`
 - `cross-env`
 
-All install dev command: `npm install -D @types/express nodemon copyfiles dotenv cross-env`
+All install dev command: `npm install -D @types/express nodemon copyfiles cross-env`
