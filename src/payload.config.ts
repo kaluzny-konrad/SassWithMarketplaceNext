@@ -17,6 +17,7 @@ export default buildConfig({
     admin: "/dashboard",
   },
   admin: {
+    user: "users",
     bundler: webpackBundler(),
     meta: {
       titleSuffix: "- My Brand",

@@ -9,12 +9,13 @@ var richtext_slate_1 = require("@payloadcms/richtext-slate");
 var path_1 = __importDefault(require("path"));
 var config_1 = require("payload/config");
 var dotenv_1 = __importDefault(require("dotenv"));
+var Users_1 = require("./collections/Users");
 dotenv_1.default.config({
     path: path_1.default.resolve(__dirname, "../.env"),
 });
 exports.default = (0, config_1.buildConfig)({
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
-    collections: [],
+    collections: [Users_1.Users],
     routes: {
         admin: "/dashboard",
     },
