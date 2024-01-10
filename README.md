@@ -10,7 +10,7 @@ Next.js app on Render with Payload, Mongo, Stripe, Resend and custom Auth
 - `express`
 - `payload`
 
-All base command: `npm install express @vercel/analytics @vercel/speed-insights dotenv`
+All base command: `npm install express dotenv`
 All payload command: `npm install payload @payloadcms/bundler-webpack @payloadcms/db-mongodb @payloadcms/richtext-slate`
 
 ## Dev Packages to install:
