@@ -10,50 +10,48 @@ const adminsAndUser: Access = ({ req: { user } }) => {
   };
 };
 
-
 export const Users: CollectionConfig = {
-    slug: "users",
-    auth: {
-      verify: {
-        generateEmailHTML: ({ token }) => {
-          return PrimaryActionEmailHtml({
-            actionLabel: "Verify Email",
-            buttonText: "Verify Email",
-            href: `${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}`,
-          });
-        },
+  slug: "users",
+  auth: {
+    verify: {
+      generateEmailHTML: ({ token }) => {
+        return PrimaryActionEmailHtml({
+          actionLabel: "Verify Email",
+          buttonText: "Verify Email",
+          href: `${process.env.NEXT_PUBLIC_SERVER_URL}/verify-email?token=${token}`,
+        });
       },
     },
-    access: {
-      read: adminsAndUser,
-      create: () => true,
-      update: ({ req }) => req.user.role === "admin",
-      delete: ({ req }) => req.user.role === "admin",
-    },
-    admin: {
-      hidden: ({ user }) => user.role !== "admin",
-      defaultColumns: ["id"],
-    },
-    fields: [
-      {
-        name: "role",
-        defaultValue: "user",
-        required: true,
-        admin: {
-          condition: () => true,
-        },
-        type: "select",
-        options: [
-          {
-            label: "Admin",
-            value: "admin",
-          },
-          {
-            label: "User",
-            value: "user",
-          },
-        ],
+  },
+  access: {
+    read: adminsAndUser,
+    create: () => true,
+    update: ({ req }) => req.user.role === "admin",
+    delete: ({ req }) => req.user.role === "admin",
+  },
+  admin: {
+    hidden: ({ user }) => user.role !== "admin",
+    defaultColumns: ["id"],
+  },
+  fields: [
+    {
+      name: "role",
+      defaultValue: "user",
+      required: true,
+      admin: {
+        condition: () => true,
       },
-    ],
-  };
-  
+      type: "select",
+      options: [
+        {
+          label: "Admin",
+          value: "admin",
+        },
+        {
+          label: "User",
+          value: "user",
+        },
+      ],
+    },
+  ],
+};

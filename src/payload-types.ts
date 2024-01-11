@@ -9,6 +9,8 @@
 export interface Config {
   collections: {
     users: User;
+    products: Product;
+    orders: Order;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -29,6 +31,25 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password: string | null;
+}
+export interface Product {
+  id: string;
+  name: string;
+  description?: string | null;
+  price: number;
+  approvedForSale?: ('pending' | 'approved' | 'denied') | null;
+  priceId?: string | null;
+  stripeId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+export interface Order {
+  id: string;
+  _isPaid: boolean;
+  user: string | User;
+  products: (string | Product)[];
+  updatedAt: string;
+  createdAt: string;
 }
 export interface PayloadPreference {
   id: string;

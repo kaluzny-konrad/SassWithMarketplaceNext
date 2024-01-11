@@ -6,6 +6,9 @@ import { appRouter } from "./trpc";
 import nextBuild from "next/dist/build";
 import path from "path";
 import { inferAsyncReturnType } from "@trpc/server";
+import bodyParser from "body-parser";
+import { IncomingMessage } from "http";
+import { stripeWebhookHandler } from "./webhooks";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -20,7 +23,15 @@ const createContext = ({
 
 export type ExpressContext = inferAsyncReturnType<typeof createContext>;
 
+export type WebhookRequest = IncomingMessage & { rawBody: Buffer };
+
 const start = async () => {
+
+  const webhookMiddleware = bodyParser.json({
+    verify: (req: WebhookRequest, _, buffer) => {
+      req.rawBody = buffer;
+    },
+  });
 
   const payload = await getPayloadClient({
     initOptions: {
@@ -30,6 +41,8 @@ const start = async () => {
       },
     },
   });
+
+  app.post("/api/webhooks/stripe", webhookMiddleware, stripeWebhookHandler);
 
   if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {
