@@ -18,21 +18,16 @@ export default function VerifyEmailPage({ searchParams }: Props) {
         <VerifyEmail token={token} />
       ) : (
         <div className="flex flex-col items-center space-y-2">
-
           <h3 className="text-2xl font-semibold">Check your email</h3>
 
           <div className="text-muted-foreground">
-            {toEmail ? (
-              <p>
-                We&apos;ve sent a verification link to{" "}
-                <span className="font-semibold">{toEmail}</span>.
-              </p>
-            ) : (
-              <p>
-                We&apos;ve sent a verification link to{" "}
-                <span className="font-semibold">your email</span>.
-              </p>
-            )}
+            <p>
+              We&apos;ve sent a verification link to{" "}
+              <span className="font-semibold">
+                {toEmail ? toEmail : "your email"}
+              </span>
+              .
+            </p>
           </div>
         </div>
       )}

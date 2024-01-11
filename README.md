@@ -10,6 +10,7 @@ Next.js app on Render with Payload, Mongo, Stripe, Resend and custom Auth
 5. Init Users collection with mail verification and run `npm run generate:types`
 6. Init Shadcn `npx shadcn-ui@latest init` and init some components `npx shadcn-ui@latest add button`
 7. Add safety middleware
+8. Add auth pages and init resend
 
 ## Core Packages to install:
 - `express`
