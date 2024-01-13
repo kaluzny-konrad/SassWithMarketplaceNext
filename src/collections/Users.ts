@@ -53,5 +53,11 @@ export const Users: CollectionConfig = {
         },
       ],
     },
+    {
+      name: "boughtProducts",
+      type: "relationship",
+      relationTo: "products",
+      hasMany: true,
+    },
   ],
 };

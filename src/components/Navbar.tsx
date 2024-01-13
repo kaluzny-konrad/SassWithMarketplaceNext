@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import UserAccountNav from "./UserAccountNav";
 import MobileNav from "./MobileNav";
 import DesktopNav from "./DesktopNav";
+import CartIcon from "./CartIcon";
 
 type Props = {};
 
@@ -25,6 +26,10 @@ export default async function Navbar({}: Props) {
             </div>
 
             <DesktopNav user={user} />
+
+            <div className="ml-4 flow-root lg:ml-6">
+              <CartIcon />
+            </div>
           </div>
         </div>
       </header>
