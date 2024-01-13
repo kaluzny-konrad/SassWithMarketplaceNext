@@ -28,12 +28,13 @@ export type ExpressContext = inferAsyncReturnType<typeof createContext>;
 export type WebhookRequest = IncomingMessage & { rawBody: Buffer };
 
 const start = async () => {
-
   const webhookMiddleware = bodyParser.json({
     verify: (req: WebhookRequest, _, buffer) => {
       req.rawBody = buffer;
     },
   });
+
+  app.post("/api/webhooks/stripe", webhookMiddleware, stripeWebhookHandler);
 
   const payload = await getPayloadClient({
     initOptions: {
@@ -43,20 +44,6 @@ const start = async () => {
       },
     },
   });
-
-  app.post("/api/webhooks/stripe", webhookMiddleware, stripeWebhookHandler);
-
-  const cartRouter = express.Router();
-
-  cartRouter.use(payload.authenticate);
-  cartRouter.get("/", async (req, res) => {
-    const request = req as PayloadRequest;
-    if (!request.user) return res.redirect("/sign-in?origin=cart");
-    const parsedUrl = parse(req.url, true);
-    return nextApp.render(req, res, "/cart", parsedUrl.query);
-  });
-
-  app.use("/cart", cartRouter);
 
   if (process.env.NEXT_BUILD) {
     app.listen(PORT, async () => {
@@ -78,6 +65,18 @@ const start = async () => {
     });
     return;
   }
+
+  const cartRouter = express.Router();
+
+  cartRouter.use(payload.authenticate);
+  cartRouter.get("/", async (req, res) => {
+    const request = req as PayloadRequest;
+    if (!request.user) return res.redirect("/sign-in?origin=cart");
+    const parsedUrl = parse(req.url, true);
+    return nextApp.render(req, res, "/cart", parsedUrl.query);
+  });
+
+  app.use("/cart", cartRouter);
 
   app.use(
     "/api/trpc",
